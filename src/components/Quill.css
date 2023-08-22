@@ -1,0 +1,41 @@
+.ql-container {
+  position: relative;
+}
+
+.ql-toolbar.ql-snow {
+  background: white;
+  position: sticky;
+  top: 48px;
+  z-index: 5;
+  border: none;
+}
+
+.ql-container.ql-snow {
+  border: none;
+  font-family: "Inter", sans-serif;
+}
+
+.ql-container.ql-snow img {
+  margin: auto;
+}
+
+.ql-editor {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.ql-snow .ql-editor h1 {
+  font-size: 24px;
+  padding: 8px 0;
+  line-height: 30px;
+}
+
+.ql-snow .ql-editor h2 {
+  font-size: 20px;
+  padding: 8px 0;
+  line-height: 24px;
+}
+
+.ql-editor li {
+  padding: 2px 0;
+}
