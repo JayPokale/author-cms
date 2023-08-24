@@ -60,7 +60,7 @@ export default function Root() {
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Body>
-        <Suspense fallback={<NotFound />}>
+        <Suspense>
           {loadingState() && (
             <div class="w-screen h-screen fixed grid place-items-center bg-black/25 backdrop-blur-[2px] z-50">
               <div class="w-16 h-16 rounded-full border-4 border-t-white border-white/20 animate-spin" />
