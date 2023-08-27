@@ -70,7 +70,7 @@ const EditPost = () => {
             _id: postData.post._id,
             payload: {
               title: title(),
-              content: data,
+              content: data || undefined,
               draft: isSaveAsDraft,
             },
           });

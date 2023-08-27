@@ -4,4 +4,9 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [solid({ adapter: vercel({}) })],
+  server: {
+    hmr: {
+      overlay: false,
+    },
+  },
 });
