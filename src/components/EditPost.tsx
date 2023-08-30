@@ -29,21 +29,24 @@ const EditPost = () => {
 
     if (postData.error || !postData.success) {
       toast.error("Some Error Occured");
-      setLoadingState(false);
+      setLoadingState((prev) => prev - 1);
       navigate("/");
     }
+
     setTitle(postData.post.title);
+    const titleInput = document.getElementById("title");
+    if (titleInput) titleInput.innerText = postData.post.title;
 
     if (quillInstance() && postData.post.content) {
-      quillInstance()?.setContents(JSON.parse(postData.post.content));
+      await quillInstance()?.setContents(JSON.parse(postData.post.content));
     }
 
-    setLoadingState(false);
+    setLoadingState((prev) => prev - 1);
   };
 
   createEffect(() => {
     try {
-      setLoadingState(true);
+      setLoadingState((prev) => Math.max(1, prev + 1));
       fetchEditPost();
     } catch (error) {
       console.log({ error });
@@ -56,7 +59,7 @@ const EditPost = () => {
   };
 
   const handleUpdate = (isSaveAsDraft: boolean) => {
-    setLoadingState(true);
+    setLoadingState((prev) => Math.max(1, prev + 1));
     toast.promise(
       new Promise(async (resolve, reject) => {
         try {
@@ -70,7 +73,7 @@ const EditPost = () => {
             _id: postData.post._id,
             payload: {
               title: title(),
-              content: data || undefined,
+              content: data,
               draft: isSaveAsDraft,
             },
           });
@@ -89,7 +92,7 @@ const EditPost = () => {
       {
         loading: "Updating Post",
         success: (val) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           setPosts([]);
           setDrafts([]);
           loadPosts();
@@ -98,7 +101,7 @@ const EditPost = () => {
           return val as string;
         },
         error: (val: string) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val;
         },
       }
@@ -181,14 +184,13 @@ const EditPost = () => {
       <div class="w-full" style={{ "font-family": "Raleway, sans-serif" }}>
         <div
           contentEditable={true}
+          id="title"
           class={`contentEditable w-full px-4 py-2 text-2xl outline-none border-l ${
             title() ? "border-transparent" : "border-gray-300"
           } focus:border-gray-300 duration-75 group`}
           data-ph="Title"
           onInput={(e) => setTitle((e.target as HTMLElement).innerText)}
-        >
-          {title() ?? postData.post.title}
-        </div>
+        />
       </div>
       <div id="QuillJsContent">
         <div

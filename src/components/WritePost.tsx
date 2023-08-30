@@ -25,7 +25,7 @@ const WritePost = () => {
   };
 
   const handleFirstUpload = (isSaveAsDraft: boolean) => {
-    setLoadingState(true);
+    setLoadingState((prev) => Math.max(1, prev + 1));
     toast.promise(
       new Promise(async (resolve, reject) => {
         try {
@@ -62,7 +62,7 @@ const WritePost = () => {
       {
         loading: "Uploading Post",
         success: (val) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           setPosts([]);
           setDrafts([]);
           loadPosts();
@@ -71,7 +71,7 @@ const WritePost = () => {
           return val as string;
         },
         error: (val: string) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val;
         },
       }

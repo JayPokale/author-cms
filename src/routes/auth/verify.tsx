@@ -9,7 +9,7 @@ const verify = () => {
   const [params] = useSearchParams();
   const verify = { ...params }.verify;
   const [_, verification] = createRouteAction(async () => {
-    setLoadingState(true);
+    setLoadingState((prev) => Math.max(1, prev + 1));
     toast.promise(
       new Promise(async (resolve, reject) => {
         try {
@@ -30,12 +30,12 @@ const verify = () => {
         loading: "Authenticating user",
         success: (val) => {
           navigate("/");
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val as string;
         },
         error: (val) => {
           navigate("/");
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val as string;
         },
       }

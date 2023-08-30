@@ -57,7 +57,7 @@ const EditProfileInfo = () => {
   ];
 
   const handleSubmit = async () => {
-    setLoadingState(true);
+    setLoadingState((prev) => Math.max(1, prev + 1));
     toast.promise(
       new Promise(async (resolve, reject) => {
         try {
@@ -114,11 +114,11 @@ const EditProfileInfo = () => {
       {
         loading: "Updating Post",
         success: (val) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val as string;
         },
         error: (val: string) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val;
         },
       }

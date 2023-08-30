@@ -1,4 +1,4 @@
-import { Suspense, createEffect, createSignal, onCleanup } from "solid-js";
+import { Suspense, createEffect, createSignal } from "solid-js";
 import {
   Body,
   ErrorBoundary,
@@ -6,7 +6,6 @@ import {
   Head,
   Html,
   Meta,
-  Navigate,
   Routes,
   Scripts,
   Title,
@@ -16,9 +15,8 @@ import {
 import "./root.css";
 import toast, { Toaster } from "solid-toast";
 import { client } from "./utils/client";
-import NotFound from "./routes/[...404]";
 
-export const [loadingState, setLoadingState] = createSignal<boolean>(false);
+export const [loadingState, setLoadingState] = createSignal<number>(0);
 export const [User, setUser] = createSignal<any>(null);
 
 export default function Root() {
@@ -27,6 +25,7 @@ export default function Root() {
   createEffect(() => location.pathname);
 
   createEffect(async () => {
+    setLoadingState((prev) => Math.max(1, prev + 1));
     const token = localStorage.getItem("token");
     if (!token) {
       if (!/^\/auth\/(login|signup|verify)$/.test(location.pathname)) {
@@ -49,7 +48,7 @@ export default function Root() {
         toast.error("Login Expired, please login again");
       }
     }
-    setLoadingState(false);
+    setLoadingState((prev) => prev - 1);
   });
 
   return (
@@ -61,7 +60,7 @@ export default function Root() {
       </Head>
       <Body>
         <Suspense>
-          {loadingState() && (
+          {loadingState() > 0 && (
             <div class="w-screen h-screen fixed grid place-items-center bg-black/25 backdrop-blur-[2px] z-50">
               <div class="w-16 h-16 rounded-full border-4 border-t-white border-white/20 animate-spin" />
             </div>

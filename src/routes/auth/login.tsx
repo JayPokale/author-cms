@@ -9,7 +9,7 @@ const login = () => {
   const navigate = useNavigate();
 
   const [_, { Form }] = createRouteAction(async (formData: FormData) => {
-    setLoadingState(true);
+    setLoadingState((prev) => Math.max(1, prev + 1));
     toast.promise(
       new Promise(async (resolve, reject) => {
         try {
@@ -39,11 +39,11 @@ const login = () => {
         loading: "Verifying Credentials",
         success: (val) => {
           navigate("/");
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val as string;
         },
         error: (val: string) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val;
         },
       }

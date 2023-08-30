@@ -8,7 +8,7 @@ const signup = () => {
   const navigate = useNavigate();
 
   const [_, { Form }] = createRouteAction(async (formData: FormData) => {
-    setLoadingState(true);
+    setLoadingState((prev) => Math.max(1, prev + 1));
     toast.promise(
       new Promise(async (resolve, reject) => {
         try {
@@ -27,12 +27,12 @@ const signup = () => {
       {
         loading: "Sending data",
         success: (val) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           navigate("/auth/login");
           return val as string;
         },
         error: (val) => {
-          setLoadingState(false);
+          setLoadingState((prev) => prev - 1);
           return val;
         },
       }
