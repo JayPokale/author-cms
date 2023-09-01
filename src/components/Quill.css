@@ -39,3 +39,7 @@
 .ql-editor li {
   padding: 2px 0;
 }
+
+li[class^="ql-indent-"]::before {
+  content: none;
+}
